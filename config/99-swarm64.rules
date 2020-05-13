@@ -1,0 +1,2 @@
+KERNEL=="intel-fpga-port.*", MODE="0666"
+KERNEL=="intel-fpga-fme.*", MODE="0666"

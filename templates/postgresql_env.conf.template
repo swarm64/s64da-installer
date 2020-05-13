@@ -1,0 +1,34 @@
+# Refer to https://github.com/swarm64/s64da-compose/tree/master/configs
+
+# PostgreSQL configuration 
+# Use format pgconf_
+# No whitespaces allowed.
+pgconf_shared_preload_libraries='swarm64da.so'
+pgconf_max_connections=1000
+pgconf_shared_buffers=32GB
+pgconf_work_mem=4GB
+pgconf_max_stack_depth=7MB
+pgconf_maintenance_work_mem=16GB
+pgconf_max_worker_processes=1024
+pgconf_max_parallel_workers_per_gather=52
+pgconf_max_parallel_workers=1000
+pgconf_max_wal_size=10GB
+pgconf_enable_nestloop=off
+pgconf_seq_page_cost=1.0
+pgconf_random_page_cost=2.0
+pgconf_parallel_tuple_cost=0.01
+pgconf_parallel_setup_cost=500.0
+pgconf_min_parallel_table_scan_size=0
+pgconf_effective_cache_size=384GB
+pgconf_default_statistics_target=2500
+pgconf_max_locks_per_transaction=128
+pgconf_jit=on
+pgconf_parallel_leader_participation=off
+pgconf_autovacuum=off
+
+# Swarm64 specific configuration 
+# Use format pgconf_swarm64da__
+# No whitespaces allowed.
+pgconf_swarm64da__maximize_parallel_workers_per_query=on
+pgconf_swarm64da__cost_scan_page=0.001
+pgconf_swarm64da__cluster_max_budget=1024

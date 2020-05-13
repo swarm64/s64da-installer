@@ -1,0 +1,5 @@
+[__REPO_ID__]
+name=__REPO_ID__
+baseurl=__BASEURL__
+enabled=1
+gpgcheck=0

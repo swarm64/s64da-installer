@@ -1,0 +1,7 @@
+kernel.numa_balancing=0
+vm.dirty_background_bytes=134217728
+vm.swappiness=5
+vm.max_map_count=65536
+vm.zone_reclaim_mode=0
+vm.hugetlb_shm_group=__HUGE_SHM_GROUP__
+vm.nr_hugepages=__NUM_HUGE_PAGES__
