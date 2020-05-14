@@ -8,7 +8,7 @@ Once the instance is up and running you can connect through a psql client or run
 a benchmark using the [Swarm64 DA Benchmark Toolkit](https://github.com/swarm64/s64da-benchmark-toolkit).
 
 Important notice: In order to guarantee compatibility between S64 DA and
-s64da-compose, please checkout the GIT Tag that corresponds to your version of S64 DA. 
+s64da-installer, please checkout the GIT Tag that corresponds to your version of S64 DA. 
 For example, if your version of S64 DA is 4.1.0, clone this repository and execute 
 `git checkout v4.1.0` within the the repository root folder before proceeding.
 
