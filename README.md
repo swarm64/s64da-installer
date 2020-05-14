@@ -12,6 +12,13 @@ s64da-compose, please checkout the GIT Tag that corresponds to your version of S
 For example, if your version of S64 DA is 4.1.0, clone this repository and execute 
 `git checkout v4.1.0` within the the repository root folder before proceeding.
 
+# Prerequisites
+
+- Docker and Docker-Compose
+- Centos/RHEL 7 (>=7.4)
+- For FPGA targets: All FPGA(s) must be setup with their Shells (the part on the FPGA)
+- Consult the Swarm64 DA user guide or contact support@swarm64.com for more information
+
 # Launch a Swarm64 DA Instance
 
 It is recommended to run ```yum update``` before executing the Swarm64 DA installer.

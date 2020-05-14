@@ -7,12 +7,11 @@ function check_user_init {
     REQUIRE_LOGIN='TRUE'
 
     if [[ -f ${REPO_FILE} ]] ; then
-        read -r -p "Found existing repository file for repo.swarm64.com at ${REPO_FILE}. Would you like to use this login ? [y/N] " response
-        if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-            REQUIRE_LOGIN='FALSE'
-            USERNAME=$( grep -oE :.*@ ${REPO_FILE} | grep -oE [a-Z0-9]+ | head -1 )
-            PASSWORD=$( grep -oE :.*@ ${REPO_FILE} | grep -oE [a-Z0-9]+ | tail -1 )
-        fi
+        log_success "Found existing repository file for repo.swarm64.com at ${REPO_FILE}"
+        log_info "Edit or delete this file if you want to use different login credentials"
+        REQUIRE_LOGIN='FALSE'
+        USERNAME=$( grep -oE :.*@ ${REPO_FILE} | grep -oE [a-Z0-9]+ | head -1 )
+        PASSWORD=$( grep -oE :.*@ ${REPO_FILE} | grep -oE [a-Z0-9]+ | tail -1 )
     fi
 
     if [[ ${REQUIRE_LOGIN} == 'TRUE' ]]; then
@@ -48,7 +47,7 @@ function check_user {
         rm ${REPO_FILE}
         return 2
     fi
-    log_success "Repo authentication successful, installing packages"
+    log_success "Repo authentication successful"
 
     return 0
 }

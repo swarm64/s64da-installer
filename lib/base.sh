@@ -205,7 +205,7 @@ function main_menu() {
         select OPT in "${OPTIONS[@]}"; do
             case ${OPT} in
                 "Run the installation") 
-                    echo "Installing ${PRODUCT_NAME} for ${ACCELERATION} ${TARGET_DEVICE}" 
+                    echo "Installing ${PRODUCT_NAME} for ${TARGET_STRING}"
                     echo
                     read_steps ${ACCELERATION}
                     break

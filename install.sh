@@ -20,26 +20,32 @@ case ${2} in
     "intel")
         ACCELERATION='intel'
         TARGET_DEVICE='pac-a10'
+        TARGET_STRING='Intel PAC Arria10'
         ;;
     "xilinx-u50")
         ACCELERATION='xilinx'
         TARGET_DEVICE='u50'
+        TARGET_STRING='Xilinx Alveo U50'
         ;;
     "xilinx-u200")
         ACCELERATION='xilinx'
         TARGET_DEVICE='u200'
+        TARGET_STRING='Xilinx Alveo U200'
         ;;
     "xilinx-u250")
         ACCELERATION='xilinx'
         TARGET_DEVICE='u250'
+        TARGET_STRING='Xilinx Alveo U250'
         ;;
     "samsung-smartssd")
         ACCELERATION='xilinx'
         TARGET_DEVICE='smartssd'
+        TARGET_STRING='Samsung SmartSSD'
         ;;                        
     "cpu")
         ACCELERATION='cpu'
         TARGET_DEVICE='cpu'
+        TARGET_STRING='Swarm64 CPU'
         ;;
     *)
         echo "Invalid option, arg intel, xilinx-u50, xilinx-u200, xilinx-u250, samsung-smartssd or cpu must be given"
@@ -73,6 +79,6 @@ if [[ "${ADVANCED}" == "TRUE" ]]; then
     main_menu
 fi
 echo
-echo "Running S64 DA ${SWARM64DA_RELEASE_VERSION} Installer for ${ACCELERATION} ${TARGET_DEVICE}"
+echo "Running S64 DA ${SWARM64DA_RELEASE_VERSION} Installer for ${TARGET_STRING}"
 echo
 read_steps ${ACCELERATION}

@@ -5,9 +5,14 @@ function install_xilinx_drivers_init {
     YUM='yum'
     SPINNER='spinner'
     WC='wc'
-    XILINX_PACKAGES="xrt xilinx-${TARGET_DEVICE}-xdma"
+    XILINX_PACKAGES="xrt"
+    if [[ "${TARGET_DEVICE}" == "u50" ]]; then
+       XILINX_PACKAGES+=" xilinx-u50-gen3x16-xdma-blp xilinx-cmc-u50 xilinx-sc-fw-u50"
+    else
+       XILINX_PACKAGES+=" xilinx-${TARGET_DEVICE}-xdma"
+    fi
     PACKAGES=()
-    for PKG in $(yum search xilinx | awk '/^xilinx-u.*-xdma/ || /^xrt/ {print $1}'); do
+    for PKG in $(yum search xilinx | awk '/^xilinx-/ || /^xrt/ {print $1}'); do
         PACKAGES+=(${PKG});
     done
 }
