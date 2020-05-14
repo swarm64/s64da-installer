@@ -167,7 +167,7 @@ at least ${DOCKER_MINIMUM_MAJOR_VERSION}.${DOCKER_MINIMUM_MINOR_VERSION}.${DOCKE
     fi
 
     # Check that docker is running
-    ${DOCKER} info >>${LOG}
+    ${DOCKER} info &>>${LOG}
     if [[ $? -ne 0 ]]; then
         log_error 'The docker daemon is not running'
         return 4
@@ -196,7 +196,13 @@ function check_docker_compose_version_init {
 
 
 function check_docker_compose_version {
-    log_info "Checking Docker-Compose"
+    log_info "Checking Docker-Compose version"
+
+    $DOCKER_COMPOSE_WITH_PATH --version >>${LOG}
+    if [[ $? != 0 ]]; then
+        log_error "Couldn't get docker-compose version"
+        return 3
+    fi
 
     if [[ "x${DOCKER_COMPOSE_WITH_PATH}" == "x" ]]; then
         log_error "Can't find docker-compose in execution path"

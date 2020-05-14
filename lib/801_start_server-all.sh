@@ -32,6 +32,14 @@ function start_server {
         return 2
     fi
 
+
+    # Stop if a container with the same name is already running
+    docker ps | grep ${CONTAINER_NAME} > /dev/null
+    if [[ $? -eq 0 ]]; then
+        log_error "A container with name ${CONTAINER_NAME} is already running"
+        return 3
+    fi
+
     COMPOSE_CMD="${DOCKER_COMPOSE} -f config/${DOCKER_COMPOSE_YML} up -d"
     log_info "Starting ${PRODUCT_NAME_SHORT}"
     log_info "Command used is: $COMPOSE_CMD"
@@ -40,7 +48,7 @@ function start_server {
         log_error "Couldn't start the ${PRODUCT_NAME_SHORT} docker container
 You can try to start the container manually with:\n${COMPOSE_CMD}
 
-Please verify your docker-compose installation. Consult the Swarm64 DA user-guide.
+Please verify your docker-compose installation. Consult the Swarm64 DA user-guide
 
 In many cases the issue can likely be resolved by executing the following commands:
  sudo rpm -e --nodeps python-urllib3
@@ -55,14 +63,26 @@ Make sure all packages remove/install properly. If the problem persists, contact
     log_success "${PRODUCT_NAME_SHORT} instance with the name ${CONTAINER_NAME} started"
 
     local COUNT=0
+    log_info "Container log files can be checked with \'docker logs ${CONTAINER_NAME}\'"
     log_info "Waiting for postgres.."
     ${SPINNER} $!
     while true; do
+
+        # Check if the container is still there
+        docker ps | grep ${CONTAINER_NAME} > /dev/null
+        if [[ $? -ne 0 ]]; then
+            docker logs ${CONTAINER_NAME} >> ${LOG}
+            log_error "Container ${CONTAINER_NAME} stopped unexpectedly"
+            return 4
+        fi
+
+        # Try to connect to postgres
         ( ${DOCKER} exec -it ${CONTAINER_NAME} psql -U postgres -c "\l" -o /dev/null ) >>${LOG} && break
         sleep ${DELAY:-5}
         let "COUNT++"
         if [[ ${COUNT} -ge 10 ]]; then 
             log_error "Couldn't contact ${DB_NAME} database"
+            docker logs ${CONTAINER_NAME} >> ${LOG}
             return 4
         fi
     done
@@ -108,7 +128,7 @@ Make sure all packages remove/install properly. If the problem persists, contact
 ***
 ${PRODUCT_NAME} instance started and verified
 Check the status of the docker container with \'docker ps\'
-Check the docker log files with \'docker logs swarm64da_container\'
+Check the docker log files with \'docker logs ${CONTAINER_NAME}\'
 
 Connect to PSQL eg. with \'psql -U postgres -h localhost\'
 ***"

@@ -33,7 +33,7 @@ function log_info() {
 
 function log_error() {
     printf "${RED}${1}\nFor More information revisit the log-file at: ${LOG}${NC}\n" | tee -a ${LOG}
-    printf "${RED}If the issue appears after 'yum update' and/or driver installation, reboot and try again.${NC}\n" | tee -a ${LOG}
+    printf "${RED}If the issue appears after 'yum update' and/or driver installation, reboot and try again${NC}\n" | tee -a ${LOG}
     printf "${RED}If the issue persists contact support@swarm64.com and provide the log file${NC}\n" | tee -a ${LOG}
     echo "==== START DUMP of GIT status and diff" >> ${LOG}
     git status >> ${LOG}

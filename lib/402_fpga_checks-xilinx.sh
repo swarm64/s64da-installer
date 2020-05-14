@@ -19,12 +19,12 @@ function check_xilinx_device_files_init {
 
 function check_xilinx_device_files {
     if [[ ${LEN_DEVICES_LIST} -lt 1 ]]; then
-        log_error "Can't find xclmgmt entries in /dev, try a cold boot and re-run the installer"
+        log_error "Can't find xclmgmt entries in /dev. Reboot and re-run the installer"
         return 1
     fi
 
     if [[ ${LEN_PORT_LIST} -lt 1 ]]; then
-        log_error "Can't find any entries in /dev/dri, try a cold boot and re-run the installer"
+        log_error "Can't find any entries in /dev/dri. Reboot and re-run the installer"
         return 2
     fi
 
@@ -39,7 +39,7 @@ function check_xilinx_device_files {
     fi
 
     if [[ ${FPGAS_TOTAL} -ne ${FPGAS_USABLE} ]]; then
-        log_error "Found ${FPGAS_TOTAL} total FPGAs - but only ${FPGAS_USABLE} are usable, try a cold boot and re-run the installer"
+        log_error "Found ${FPGAS_TOTAL} total FPGAs - but only ${FPGAS_USABLE} are usable. Reboot and re-run the installer"
         return 5
     fi
 
