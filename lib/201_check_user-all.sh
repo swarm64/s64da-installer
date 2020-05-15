@@ -28,19 +28,21 @@ function check_user_init {
 
 
 function check_user {
-    if [[ ${IS_SUPER_USER} == "TRUE" ]]; then
-        cat templates/swarm64-temporary.template > ${REPO_FILE}
-        sed -i "s#__REPO_ID__#${REPO_ID}#g" "${REPO_FILE}"
-        sed -i "s#__BASEURL__#${BASEURL}#g" "${REPO_FILE}"
+    if [[ ${REQUIRE_LOGIN} == 'TRUE' ]]; then
+        if [[ ${IS_SUPER_USER} == "TRUE" ]]; then
+            cat templates/swarm64-temporary.template > ${REPO_FILE}
+            sed -i "s#__REPO_ID__#${REPO_ID}#g" "${REPO_FILE}"
+            sed -i "s#__BASEURL__#${BASEURL}#g" "${REPO_FILE}"
 
-        if [[ ! -f ${REPO_FILE} ]]; then
-            log_error "The file ${REPO_FILE} could not be written"
-            return 1
+            if [[ ! -f ${REPO_FILE} ]]; then
+                log_error "The file ${REPO_FILE} could not be written"
+                return 1
+            else
+                log_info "Added Swarm64 repository file at ${REPO_FILE}"
+            fi
         else
-            log_info "Added Swarm64 repository file at ${REPO_FILE}"
+            log_info "Not a super user. Skip adding Swarm64 repository file"
         fi
-    else
-        log_info "Not a super user. Skip adding Swarm64 repository file"
     fi
     if [[ ${REPO_CHECK} != "200" ]]; then
         log_error "Syncing with the repo failed, please check username and password or contact support@swarm64.com"

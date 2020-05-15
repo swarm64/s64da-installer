@@ -32,13 +32,13 @@ function install_xilinx_drivers {
             log_info "Installing ${XILINX_PACKAGE}"
 
             if [[ ${IS_SUPER_USER} == "TRUE" ]]; then
-                ${YUM} install -y "${XILINX_PACKAGE}" >>${LOG} 2>&1 &
+                ${YUM} install -y "${XILINX_PACKAGE}" &>>${LOG} &
                 ${SPINNER} $!
             else
                 log_info "Not a super user. Skip installation of ${XILINX_PACKAGE}"
             fi
 
-            PACKAGE_PRESENT=$(${YUM} list -q installed | grep -E ${XILINX_PACKAGE} | ${WC} -l)
+            PACKAGE_PRESENT=$(${YUM} list -q installed 2> ${LOG} | grep -E ${XILINX_PACKAGE} | ${WC} -l)
             if [[ "${PACKAGE_PRESENT}" == "0" ]]; then
                 log_error "Installation of ${XILINX_PACKAGE} failed / Package not available\nDid you run as root ? (sudo ./install.sh ..)"
                 return 2

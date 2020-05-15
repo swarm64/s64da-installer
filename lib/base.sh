@@ -93,7 +93,7 @@ function spinner() {
     do
       IDX=$(( (IDX+1) %4 ))
       printf "${GREEN}\r${SPIN:${IDX}:1}"
-      printf "\033[1D"
+      printf "\033[1D${NC}"
       sleep .1
     done
     printf "\r"

@@ -7,7 +7,7 @@ function install_intel_drivers_init {
     OPAE_PACKAGES="opae-libs opae-devel opae-tools opae-intel-fpga-driver"
     OPAE_VERSION=1.1.2-1
     PACKAGES=()
-    for PKG in $(yum search opae | awk '/^opae-.*\.x86_64/ {print $1}'); do
+    for PKG in $(yum search opae 2> ${LOG} | awk '/^opae-.*\.x86_64/ {print $1}'); do
         PACKAGES+=(${PKG});
     done
 
@@ -27,13 +27,13 @@ function install_intel_drivers {
         log_info "Installing ${OPAE_PACKAGE}"
 
         if [[ ${IS_SUPER_USER} == "TRUE" ]]; then
-            ${YUM} install -y "${OPAE_PACKAGE}" >>${LOG} 2>&1 &
+            ${YUM} install -y "${OPAE_PACKAGE}" &>> ${LOG} &
             ${SPINNER} $!
         else
             log_info "Not a super user. Skip installation of ${OPAE_PACKAGE}"
         fi
 
-        PACKAGE_PRESENT=$(${YUM} list -q installed | grep -E ${OPAE_PACKAGE} | ${WC} -l)
+        PACKAGE_PRESENT=$(${YUM} list -q installed 2> ${LOG} | grep -E ${OPAE_PACKAGE} | ${WC} -l)
         if [[ "${PACKAGE_PRESENT}" == "0" ]]; then
             log_error "Installation of ${OPAE_PACKAGE} failed / Package not available\nDid you run as root ? (sudo ./install.sh ..)"
             return 2

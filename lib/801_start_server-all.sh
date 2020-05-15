@@ -65,7 +65,6 @@ Make sure all packages remove/install properly. If the problem persists, contact
     local COUNT=0
     log_info "Container log files can be checked with \'docker logs ${CONTAINER_NAME}\'"
     log_info "Waiting for postgres.."
-    ${SPINNER} $!
     while true; do
 
         # Check if the container is still there
@@ -78,7 +77,8 @@ Make sure all packages remove/install properly. If the problem persists, contact
 
         # Try to connect to postgres
         ( ${DOCKER} exec -it ${CONTAINER_NAME} psql -U postgres -c "\l" -o /dev/null ) >>${LOG} && break
-        sleep ${DELAY:-5}
+        sleep ${DELAY:-5} &
+        ${SPINNER} $!
         let "COUNT++"
         if [[ ${COUNT} -ge 10 ]]; then 
             log_error "Couldn't contact ${DB_NAME} database"
