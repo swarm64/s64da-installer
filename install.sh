@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SWARM64DA_RELEASE_VERSION=4.1.0
+SWARM64DA_RELEASE_VERSION=4.1.1
 
 if [[ ${1} == "--help" ]]; then
     echo "run: ./install.sh --type __acceleration_option__"
