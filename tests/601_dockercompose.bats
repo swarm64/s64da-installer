@@ -13,16 +13,6 @@ teardown() {
     rm -rf ./s64-tests
 }
 
-
-@test "Docker-compose Edit Failed" {
-    EDIT_FILE=$(mock_create)
-    mock_set_status ${EDIT_FILE} 1
-
-    run show_edit_docker_compose
-    
-    [ "$status" -eq 1 ]
-}
-
 @test "Docker-compose Edit Passed" {
     EDIT_FILE=$(mock_create)
     mock_set_status ${EDIT_FILE} 0
