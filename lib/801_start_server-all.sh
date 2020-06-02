@@ -40,7 +40,7 @@ function start_server {
         return 3
     fi
 
-    COMPOSE_CMD="${DOCKER_COMPOSE} -f config/${DOCKER_COMPOSE_YML} up -d"
+    COMPOSE_CMD="${DOCKER_COMPOSE} -f ${DOCKER_COMPOSE_YML} up -d"
     log_info "Starting ${PRODUCT_NAME_SHORT}"
     log_info "Command used is: $COMPOSE_CMD"
     ${COMPOSE_CMD} 2>>${LOG}

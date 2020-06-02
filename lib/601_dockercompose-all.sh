@@ -3,7 +3,7 @@
 function show_edit_docker_compose_init {
     EDIT_FILE='edit_file'
     CONTAINER_NAME='swarm64da_container'
-    DOCKER_COMPOSE_YML='docker-compose.yml'
+    DOCKER_COMPOSE_YML="${INSTALLER_BASE_DIR}/config/docker-compose.yml"
     REPO="repo.swarm64.com"
     # Only for testing release candidates
     #RELEASE_CANDIDATE_PREVIEW_TAG="-preview"
@@ -77,7 +77,8 @@ function show_edit_docker_compose {
     #if [[ $? -ne 0 ]]; then
     #    return 1
     #fi
-    mv ${DOCKER_COMPOSE_TEMPLATE}.tmp config/${DOCKER_COMPOSE_YML} 2>>${LOG}
+    mv ${DOCKER_COMPOSE_TEMPLATE}.tmp ${DOCKER_COMPOSE_YML} 2>>${LOG}
+    log_success "Written out docker-compose file to: ${DOCKER_COMPOSE_YML}"
 
     return 0
 }
