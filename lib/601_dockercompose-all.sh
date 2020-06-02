@@ -33,6 +33,8 @@ function show_edit_docker_compose_init {
             ;;
     esac
 
+    DOCKER_COMPOSE_YML="docker-compose-${SWARM64DA_IMAGE}.yml"
+
     echo
     read -p "Enter the directory to use for the data, or leave empty for the default (${DEFAULT_DATA_DIR}): " DATA_DIR
     if [[ -z ${DATA_DIR} ]]; then
