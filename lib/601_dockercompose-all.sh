@@ -1,13 +1,13 @@
 #!/bin/bash
 
 function show_edit_docker_compose_init {
-    EDIT_FILE='edit_file'
-    CONTAINER_NAME='swarm64da_container'
-    DOCKER_COMPOSE_YML="${INSTALLER_BASE_DIR}/config/docker-compose.yml"
-    REPO="repo.swarm64.com"
     # Only for testing release candidates
     #RELEASE_CANDIDATE_PREVIEW_TAG="-preview"
     #RELEASE_CANDIDATE_VERSION_TAG="-rc1"
+
+    EDIT_FILE='edit_file'
+    CONTAINER_NAME='swarm64da_container'
+    REPO="repo.swarm64.com"
     SWARM64DA_VERSION=${SWARM64DA_RELEASE_VERSION}${RELEASE_CANDIDATE_VERSION_TAG}
     DEFAULT_DATA_DIR="/mnt/s64da"
 
@@ -33,7 +33,7 @@ function show_edit_docker_compose_init {
             ;;
     esac
 
-    DOCKER_COMPOSE_YML="docker-compose-${SWARM64DA_IMAGE}.yml"
+    DOCKER_COMPOSE_YML="${INSTALLER_BASE_DIR}/config/docker-compose-${SWARM64DA_IMAGE}-${SWARM64DA_RELEASE_VERSION//./_}${RELEASE_CANDIDATE_VERSION_TAG}.yml"
 
     echo
     read -p "Enter the directory to use for the data, or leave empty for the default (${DEFAULT_DATA_DIR}): " DATA_DIR
@@ -42,7 +42,7 @@ function show_edit_docker_compose_init {
         DATA_DIR=${DEFAULT_DATA_DIR}
     fi
 
-    if ls -A ${DATA_DIR}; then
+    if ls -A ${DATA_DIR} &> /dev/null; then
         log_error "Data directory ${DATA_DIR} must be empty. Please choose a different directory."
         return 2
     fi    
