@@ -3,6 +3,8 @@
 function start_server_init {
     SPINNER='spinner'
     WC='wc'
+    GREP='grep'
+    DOCKER_PS="${DOCKER} ps"
     DELAY=10
     DB_NAME='swarm64da_test_db'
     TABLE_NAME='test_table'
@@ -34,7 +36,7 @@ function start_server {
 
 
     # Stop if a container with the same name is already running
-    docker ps | grep ${CONTAINER_NAME} > /dev/null
+    ${DOCKER_PS} | ${GREP} "CONTAINER_NAME"
     if [[ $? -eq 0 ]]; then
         log_error "A container with name ${CONTAINER_NAME} is already running"
         return 3
@@ -68,11 +70,11 @@ Make sure all packages remove/install properly. If the problem persists, contact
     while true; do
 
         # Check if the container is still there
-        docker ps | grep ${CONTAINER_NAME} > /dev/null
+        ${DOCKER_PS} | ${GREP} ${CONTAINER_NAME} > /dev/null
         if [[ $? -ne 0 ]]; then
-            docker logs ${CONTAINER_NAME} >> ${LOG}
+            ${DOCKER} logs ${CONTAINER_NAME} >> ${LOG}
             log_error "Container ${CONTAINER_NAME} stopped unexpectedly"
-            return 4
+            return 3
         fi
 
         # Try to connect to postgres
@@ -82,7 +84,7 @@ Make sure all packages remove/install properly. If the problem persists, contact
         let "COUNT++"
         if [[ ${COUNT} -ge 10 ]]; then 
             log_error "Couldn't contact ${DB_NAME} database"
-            docker logs ${CONTAINER_NAME} >> ${LOG}
+            ${DOCKER} logs ${CONTAINER_NAME} >> ${LOG}
             return 4
         fi
     done

@@ -9,7 +9,7 @@ function show_edit_docker_compose_init {
     #RELEASE_CANDIDATE_PREVIEW_TAG="-preview"
     #RELEASE_CANDIDATE_VERSION_TAG="-rc1"
     SWARM64DA_VERSION=${SWARM64DA_RELEASE_VERSION}${RELEASE_CANDIDATE_VERSION_TAG}
-    DEFAULT_DATA_DIR="/mnt/data"
+    DEFAULT_DATA_DIR="/mnt/s64da"
 
     case ${TARGET_DEVICE} in
         "pac-a10")
@@ -40,14 +40,19 @@ function show_edit_docker_compose_init {
         DATA_DIR=${DEFAULT_DATA_DIR}
     fi
 
+    if ls -A ${DATA_DIR}; then
+        log_error "Data directory ${DATA_DIR} must be empty. Please choose a different directory."
+        return 2
+    fi    
+
     if [[ ! ${DATA_DIR} =~ ^/.+ ]]; then
         log_error "Data directory path must be absolute"
-        return 2
+        return 3
     fi
 
     if ! stat -t $(dirname ${DATA_DIR}) > /dev/null 2>&1; then
         log_error "Data directory must be in an existing path"
-        return 3
+        return 4
     fi
 
     # Do the replacements
