@@ -28,17 +28,6 @@ teardown() {
     rm -rf ./s64-tests
 }
 
-
-@test "99sysctl Edit Failed" {
-    EDIT_FILE=$(mock_create)
-    mock_set_status ${EDIT_FILE} 1
-
-    run system_config
-    
-    [ "$status" -eq 1 ]
-}
-
-
 @test "Huge Pages wrong" {
     NUM_HUGE_PAGES="12"
     EDIT_FILE=$(mock_create)

@@ -3,13 +3,13 @@
 function show_edit_docker_compose_init {
     EDIT_FILE='edit_file'
     CONTAINER_NAME='swarm64da_container'
-    DOCKER_COMPOSE_YML='docker-compose.yml'
+    DOCKER_COMPOSE_YML="${INSTALLER_BASE_DIR}/config/docker-compose.yml"
     REPO="repo.swarm64.com"
     # Only for testing release candidates
     #RELEASE_CANDIDATE_PREVIEW_TAG="-preview"
     #RELEASE_CANDIDATE_VERSION_TAG="-rc1"
     SWARM64DA_VERSION=${SWARM64DA_RELEASE_VERSION}${RELEASE_CANDIDATE_VERSION_TAG}
-    DEFAULT_DATA_DIR="/mnt/data"
+    DEFAULT_DATA_DIR="/mnt/s64da"
 
     case ${TARGET_DEVICE} in
         "pac-a10")
@@ -42,14 +42,19 @@ function show_edit_docker_compose_init {
         DATA_DIR=${DEFAULT_DATA_DIR}
     fi
 
+    if ls -A ${DATA_DIR}; then
+        log_error "Data directory ${DATA_DIR} must be empty. Please choose a different directory."
+        return 2
+    fi    
+
     if [[ ! ${DATA_DIR} =~ ^/.+ ]]; then
         log_error "Data directory path must be absolute"
-        return 2
+        return 3
     fi
 
     if ! stat -t $(dirname ${DATA_DIR}) > /dev/null 2>&1; then
         log_error "Data directory must be in an existing path"
-        return 3
+        return 4
     fi
 
     # Do the replacements
@@ -79,7 +84,8 @@ function show_edit_docker_compose {
     #if [[ $? -ne 0 ]]; then
     #    return 1
     #fi
-    mv ${DOCKER_COMPOSE_TEMPLATE}.tmp config/${DOCKER_COMPOSE_YML} 2>>${LOG}
+    mv ${DOCKER_COMPOSE_TEMPLATE}.tmp ${DOCKER_COMPOSE_YML} 2>>${LOG}
+    log_success "Written out docker-compose file to: ${DOCKER_COMPOSE_YML}"
 
     return 0
 }

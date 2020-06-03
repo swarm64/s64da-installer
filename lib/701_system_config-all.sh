@@ -67,6 +67,7 @@ function system_config {
     ${CAT} config/${SYSCTL_CONF} > ${OS_SYSCTL_CONF:-/tmp/s64_remove_me} 2>>${LOG}
     ${CHMOD} +x ${OS_SYSCTL_CONF:-/tmp/s64_remove_me} 2>>${LOG}
     ${SYSCTL} -p ${OS_SYSCTL_CONF} >>${LOG}
+    log_success "Written sysctl settings to: ${OS_SYSCTL_CONF}"
 
     local CHECK_HUGE_PAGES=$(${SYSCTL} vm.nr_hugepages | awk '{print $3}')
     if [[ ${CHECK_HUGE_PAGES} -lt ${NUM_HUGE_PAGES} ]]; then
@@ -99,14 +100,14 @@ function system_config {
         fi
     fi
 
-    log_info "updating ${HUGEPAGE_ENABLED}"
+    log_info "Updating ${HUGEPAGE_ENABLED}"
     ${ECHO} never > ${HUGEPAGE_ENABLED}
     if [[ $? != 0 ]]; then
         log_error "Updating hugepages failed"
         return 6
     fi
 
-    log_info "updating ${HUGEPAGE_DEFRAG}"
+    log_info "Updating ${HUGEPAGE_DEFRAG}"
     ${ECHO} never > ${HUGEPAGE_DEFRAG}
     if [[ $? != 0 ]]; then
         log_error "Updating hugepage defrag failed"

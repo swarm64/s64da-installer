@@ -167,12 +167,12 @@ teardown() {
     DOCKER_COMPOSE_WITH_PATH=""
 
     run check_docker_compose_version
-    [ "$status" -eq 1 ]
+    [ "$status" -eq 3 ]
 }
  
 @test "Docker-Compose Binary" {
     DOCKER_COMPOSE_WITH_PATH="/usr/local/bin/docker-compose"
 
     run check_docker_compose_version
-    [ "$status" -eq 0 ]
+    [ "$status" -eq 3 ]
 }

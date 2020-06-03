@@ -47,11 +47,29 @@ teardown() {
     [ $(mock_get_call_num ${DOCKER_COMPOSE}) -eq 1 ]
 }
 
-@test "Can't Create DB" {
-    DELAY=0
+@test "Container died" {
+    SPINNER=$(mock_create)
     DOCKER=$(mock_create)
+    GREP=$(mock_create)
     WC=$(mock_create)
     mock_set_output ${WC} "1"
+    mock_set_status ${GREP} 1 1
+    mock_set_status ${GREP} 1 2
+    DOCKER_COMPOSE=$(mock_create)
+
+    run start_server
+    [ "$status" -eq 3 ]
+}
+
+@test "Can't Create DB" {
+    SPINNER=$(mock_create)
+    DELAY=0
+    DOCKER=$(mock_create)
+    GREP=$(mock_create)
+    WC=$(mock_create)
+    mock_set_output ${WC} "1"
+    mock_set_status ${GREP} 1 1
+    mock_set_status ${GREP} 0 2
     mock_set_status ${DOCKER} 1 5
     DOCKER_COMPOSE=$(mock_create)
 
@@ -113,6 +131,5 @@ teardown() {
     run start_server
     [ "$status" -eq 0 ]
     [ $(mock_get_call_num ${DOCKER_COMPOSE}) -eq 1 ]
-    echo $(mock_get_call_num ${DOCKER})
     [ $(mock_get_call_num ${DOCKER}) -eq 9 ]
 }
