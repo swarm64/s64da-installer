@@ -16,6 +16,8 @@ if [[ ${1} != "--type" ]]; then
     exit 1
 fi
 
+INSTALLER_BASE_DIR=$( dirname "$(readlink -f "$0")")
+
 case ${2} in
     "intel")
         ACCELERATION='intel'
