@@ -49,11 +49,23 @@ Set the EDITOR to the program you wish to use for editing the config files"
 }
 
 
-function yum_kernel {
-    log_info "Installing required kernel packages"
-    yum install -y kernel-devel >>${LOG} 2>&1 &
-    yum install -y kernel-headers >>${LOG} 2>&1 &
-    spinner $!
+function yum_dependencies {
+    if [[ "${ACCELERATION}" != "cpu" ]]; then
+        log_info "Installing required kernel packages and other dependencies"
+        PACKAGES="epel-release kernel-devel kernel-headers"
+        for PACKAGE in ${PACKAGES}; do
+            log_info "Installing ${PACKAGE}"
+            yum install -y "${PACKAGE}" &>> ${LOG} &
+            spinner $!
+
+            PACKAGE_PRESENT=$(yum list -q installed 2> ${LOG} | grep -E ${PACKAGE} | wc -l)
+            if [[ "${PACKAGE_PRESENT}" == "0" ]]; then
+                log_error "Installation of ${PACKAGE} failed"
+                return 2
+            fi
+
+        done
+    fi
 }
 
 
