@@ -122,9 +122,15 @@ function check_docker_version_init {
 
     DOCKER_WITH_PATH=$(which docker 2>>${LOG})
     if [[ $? != 0 ]]; then
-        log_error "There was a problem finding the docker executable, docker \
-${DOCKER_MINIMUM_MAJOR_VERSION}.${DOCKER_MINIMUM_MINOR_VERSION}.${DOCKER_MINIMUM_PATCH} minimum is required, exiting"
-        return 1
+        log_info "There was a problem finding the docker executable, docker \
+${DOCKER_MINIMUM_MAJOR_VERSION}.${DOCKER_MINIMUM_MINOR_VERSION}.${DOCKER_MINIMUM_PATCH} minimum is required. Attempt to install."
+        yum install -y yum-utils device-mapper-persistent-data lvm2 2>&1 &
+        yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo 2>&1 &
+        yum install -y docker-ce 2>&1 &
+        systemctl start docker 2>&1 &
+        systemctl enable docker 2>&1 &
+        usermod -a -G docker $USER 2>&1 &
+        spinner $!
     fi
 
     DOCKER=$(basename ${DOCKER_WITH_PATH} 2>>${LOG})
@@ -181,8 +187,12 @@ function check_docker_compose_version_init {
     log_info "Checking for Docker-Compose"
     DOCKER_COMPOSE_WITH_PATH=$(which docker-compose 2>>${LOG})
     if [[ $? != 0 ]]; then
-        log_error 'There was a problem finding the docker-compose executable, exiting'
-        return 1
+        log_info 'There was a problem finding the docker-compose executable. Attempt to install.'
+        curl -L github.com/docker/compose/releases/download/1.25.4/docker-compose-Linux-x86_64 -o /usr/local/bin/docker-compose 2>&1 &
+        chmod +x /usr/local/bin/docker-compose 2>&1 &
+        ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose 2>&1 &
+        spinner $!
+        DOCKER_COMPOSE_WITH_PATH=$(which docker-compose 2>>${LOG})
     fi
 
     DOCKER_COMPOSE=$(basename ${DOCKER_COMPOSE_WITH_PATH} 2>>${LOG})
