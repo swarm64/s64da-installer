@@ -13,7 +13,6 @@ function check_xilinx_device_files_init {
     
     LEN_DEVICES_LIST=${#DEVICES_LIST[@]}
     LEN_PORT_LIST=${#DEVICES_PORT_LIST[@]}
-    
 }
 
 
@@ -64,6 +63,6 @@ function check_xilinx_device_files {
     done
 
 
-    log_success "Device entries for ${#LEN_DEVICES_LIST[@]} Xilinx card(s) detected"
+    log_success "Device entries for ${LEN_DEVICES_LIST[@]} Xilinx card(s) detected"
     return 0
 }

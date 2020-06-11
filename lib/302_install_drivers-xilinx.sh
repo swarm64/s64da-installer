@@ -19,7 +19,7 @@ function install_xilinx_drivers_init {
 
 
 function install_xilinx_drivers {
-    if [[ "${TARGET_DEVICE}" == "samsung-smartssd" ]]; then
+    if [[ "${TARGET_DEVICE}" == "smartssd" ]]; then
         log_warn "Samsung SmartSSD automatic driver installation not available.\nInstall manually and execute installer again."
     else    
         log_info "Installing Xilinx drivers and packages"
