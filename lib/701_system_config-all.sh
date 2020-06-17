@@ -30,7 +30,7 @@ function system_config_init {
             NUM_HUGE_PAGES=$((${#DEVICES_LIST[@]} * 265))
             ;;
         "u50")
-            NUM_HUGE_PAGES=$((${#DEVICES_LIST[@]} * 540))
+            NUM_HUGE_PAGES=$((${#DEVICES_LIST[@]} * 520))
             ;;
         "u200")
             NUM_HUGE_PAGES=$((${#DEVICES_LIST[@]} * 1032))
