@@ -42,7 +42,7 @@ function show_edit_docker_compose_init {
         DATA_DIR=${DEFAULT_DATA_DIR}
     fi
 
-    if ls -A ${DATA_DIR} &> /dev/null; then
+    if [[ $(ls -A ${DATA_DIR} &> /dev/null) ]]; then
         log_error "Data directory ${DATA_DIR} must be empty. Please choose a different directory."
         return 2
     fi    
