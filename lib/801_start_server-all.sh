@@ -7,6 +7,7 @@ function start_server_init {
     DOCKER_PS="${DOCKER} ps"
     DELAY=10
     DB_NAME='swarm64da_test_db'
+    LICENSE_DOCKER_PATH='/s64da_license/s64da_license.license'
     TABLE_NAME='test_table'
     TABLE_COLUMNS='year DATE, name INT NOT NULL, col2 VARCHAR(30)'
     TABLE_OPTIONS="optimized_columns '    \"year\", \"name\"'"
@@ -104,6 +105,16 @@ Make sure all packages remove/install properly. If the problem persists, contact
         return 6
     fi
     log_success "- extension swarm64da created"
+
+    ${DOCKER} exec -it ${CONTAINER_NAME} psql -U postgres -d ${DB_NAME} -c "select swarm64da.load_license('${LICENSE_DOCKER_PATH}')" >>${LOG}
+    if [[ $? -ne 0 ]]; then
+        log_info "S64 DA license not available, expired, or could not be loaded."
+    else
+        log_success "Loaded license ${LICENSE_DOCKER_PATH}"
+    fi
+
+    log_info "Checking S64 DA license status:"
+    ${DOCKER} exec -it ${CONTAINER_NAME} psql -U postgres -d ${DB_NAME} -c "select swarm64da.show_license()" | tee -a ${LOG}
 
     ${DOCKER} exec -it ${CONTAINER_NAME} psql -U postgres -d ${DB_NAME} -c "CREATE FOREIGN TABLE ${TABLE_NAME} (${TABLE_COLUMNS}) SERVER swarm64da_server OPTIONS (${TABLE_OPTIONS})" >>${LOG}
     if [[ $? -ne 0 ]]; then
