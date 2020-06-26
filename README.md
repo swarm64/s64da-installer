@@ -9,13 +9,15 @@ a benchmark using the [Swarm64 DA Benchmark Toolkit](https://github.com/swarm64/
 
 Important notice: In order to guarantee compatibility between S64 DA and
 s64da-installer, please checkout the GIT Tag that corresponds to your version of S64 DA. 
-For example, if your version of S64 DA is 4.1.1, clone this repository and execute 
-`git checkout v4.1.1` within the the repository root folder before proceeding.
+For example, if your version of S64 DA is 4.2.0, clone this repository and execute
+`git checkout v4.2.0` within the the repository root folder before proceeding.
 
 # Prerequisites
 
 - Docker and Docker-Compose
 - Centos/RHEL 7 (>=7.4)
+- A valid S64 DA license copied to `./config/license/s64da.license`. Replace the existing dummy file.
+  If you don't have a license file yet request one by contacting support@swarm64.com.
 - For FPGA targets: All FPGA(s) must be setup with their Shells (the part on the FPGA)
 - Consult the Swarm64 DA user guide or contact support@swarm64.com for more information
 
@@ -43,4 +45,4 @@ The individual steps are scripts in ```./lib```:
 - Editing the PostgreSQL configuration file through a docker-compose env file
 - Editing the docker-compose file to be used
 - Editing the sysctl file to be loaded
-- Pulling the docker image, starting the container, and creating a test db and table
+- Pulling the docker image, starting the container, loading the license, and creating a test db
