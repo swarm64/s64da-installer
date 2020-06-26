@@ -106,15 +106,13 @@ Make sure all packages remove/install properly. If the problem persists, contact
     fi
     log_success "- extension swarm64da created"
 
-    ${DOCKER} exec -it ${CONTAINER_NAME} psql -U postgres -d ${DB_NAME} -c "select swarm64da.load_license('${LICENSE_DOCKER_PATH}')" >>${LOG}
+    ( ${DOCKER} exec -it ${CONTAINER_NAME} psql -U postgres -d ${DB_NAME} -c "select swarm64da.load_license('${LICENSE_DOCKER_PATH}')" -o /dev/null ) >>${LOG}
     if [[ $? -ne 0 ]]; then
         log_info "S64 DA license not available, expired, or could not be loaded."
     else
         log_success "Loaded license ${LICENSE_DOCKER_PATH}"
+        ${DOCKER} exec -it ${CONTAINER_NAME} psql -U postgres -d ${DB_NAME} -c "select swarm64da.show_license()"
     fi
-
-    log_info "Checking S64 DA license status:"
-    ${DOCKER} exec -it ${CONTAINER_NAME} psql -U postgres -d ${DB_NAME} -c "select swarm64da.show_license()" | tee -a ${LOG}
 
     ${DOCKER} exec -it ${CONTAINER_NAME} psql -U postgres -d ${DB_NAME} -c "CREATE FOREIGN TABLE ${TABLE_NAME} (${TABLE_COLUMNS}) SERVER swarm64da_server OPTIONS (${TABLE_OPTIONS})" >>${LOG}
     if [[ $? -ne 0 ]]; then
