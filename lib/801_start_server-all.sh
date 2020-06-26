@@ -7,7 +7,7 @@ function start_server_init {
     DOCKER_PS="${DOCKER} ps"
     DELAY=10
     DB_NAME='swarm64da_test_db'
-    LICENSE_DOCKER_PATH='/s64da_license/s64da_license.license'
+    LICENSE_DOCKER_PATH='/s64da.license'
     TABLE_NAME='test_table'
     TABLE_COLUMNS='year DATE, name INT NOT NULL, col2 VARCHAR(30)'
     TABLE_OPTIONS="optimized_columns '    \"year\", \"name\"'"
