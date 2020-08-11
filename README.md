@@ -1,3 +1,7 @@
+# Deprecation Notice
+
+This tool is deprecated and will not be further maintained.
+
 # Summary
 
 The Swarm64 DA installer will assist in starting an instance of S64 DA by checking the 
